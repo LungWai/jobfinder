@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model JobListing {
+  id                String   @id @default(cuid())
+  title             String
+  company           String
+  location          String
+  salaryMin         Int?
+  salaryMax         Int?
+  salaryCurrency    String   @default("HKD")
+  description       String
+  requirements      String?
+  benefits          String?
+  applicationDeadline DateTime?
+  originalUrl       String   @unique
+  sourcePortal      String
+  jobCategory       String?
+  employmentType    String?  // Full-time, Part-time, Contract, etc.
+  experienceLevel   String?  // Entry, Mid, Senior, etc.
+  isActive          Boolean  @default(true)
+  
+  // Metadata
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  lastScrapedAt     DateTime @default(now())
+  scrapedCount      Int      @default(1)
+  
+  // For deduplication
+  contentHash       String   @unique
+  
+  @@index([sourcePortal])
+  @@index([jobCategory])
+  @@index([location])
+  @@index([createdAt])
+  @@index([isActive])
+  @@index([contentHash])
+  @@map("job_listings")
+}
+
+model ScrapingLog {
+  id            String   @id @default(cuid())
+  portal        String
+  status        String   // SUCCESS, ERROR, PARTIAL
+  jobsScraped   Int      @default(0)
+  jobsNew       Int      @default(0)
+  jobsUpdated   Int      @default(0)
+  errorMessage  String?
+  startTime     DateTime
+  endTime       DateTime?
+  duration      Int?     // in seconds
+  
+  createdAt     DateTime @default(now())
+  
+  @@index([portal])
+  @@index([status])
+  @@index([createdAt])
+  @@map("scraping_logs")
+}
+
+model Portal {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  baseUrl       String
+  isActive      Boolean  @default(true)
+  lastScraped   DateTime?
+  scrapingConfig String?   // Store portal-specific configuration as JSON string
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@map("portals")
+}
