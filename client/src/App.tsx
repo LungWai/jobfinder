@@ -6,6 +6,8 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Login, Register, ForgotPassword, ResetPassword, ProtectedRoute, EmailVerification } from './components/auth';
 import { queryClient } from './lib/react-query';
 import { LoadingProvider } from './utils/loadingState';
+import Interviews from './pages/Interviews';
+import { InterviewDetail, PreparationChecklist, ReminderSettings } from './components/interviews';
 
 // Simple components for now
 const JobListings = () => {
@@ -162,6 +164,12 @@ const Dashboard = () => {
             >
               Dashboard (Current)
             </button>
+            <button
+              onClick={() => window.location.href = '/interviews'}
+              className="block w-full text-left bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-colors"
+            >
+              Interview Management
+            </button>
           </div>
         </div>
       </div>
@@ -275,6 +283,10 @@ function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/jobs" element={<JobListings />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/interviews" element={<Interviews />} />
+                <Route path="/interviews/:id" element={<InterviewDetail />} />
+                <Route path="/interviews/:id/preparation" element={<PreparationChecklist />} />
+                <Route path="/interviews/:id/reminders" element={<ReminderSettings />} />
               </Route>
             </Routes>
           </AuthProvider>

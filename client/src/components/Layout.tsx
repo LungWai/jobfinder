@@ -4,7 +4,8 @@ import {
   MagnifyingGlassIcon, 
   ChartBarIcon, 
   BriefcaseIcon,
-  Cog6ToothIcon 
+  Cog6ToothIcon,
+  CalendarDaysIcon
 } from '@heroicons/react/24/outline';
 
 interface LayoutProps {
@@ -17,6 +18,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigation = [
     { name: 'Job Listings', href: '/', icon: BriefcaseIcon },
     { name: 'Dashboard', href: '/dashboard', icon: ChartBarIcon },
+    { name: 'Interviews', href: '/interviews', icon: CalendarDaysIcon },
   ];
 
   const isActive = (path: string) => {
