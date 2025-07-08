@@ -5,7 +5,7 @@ import {
   BuildingOfficeIcon, 
   CurrencyDollarIcon, 
   CalendarIcon,
-  ExternalLinkIcon,
+  ArrowTopRightOnSquareIcon,
   ClockIcon
 } from '@heroicons/react/24/outline';
 import { JobListing } from '../types/job';
@@ -149,7 +149,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
           className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
         >
           Apply on {job.sourcePortal}
-          <ExternalLinkIcon className="h-4 w-4 ml-1" />
+          <ArrowTopRightOnSquareIcon className="h-4 w-4 ml-1" />
         </a>
       </div>
     </div>

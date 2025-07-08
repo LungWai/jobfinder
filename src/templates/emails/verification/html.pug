@@ -1,0 +1,36 @@
+extends ../html
+
+block header
+  h2 Verify Your Email Address
+
+block content
+  p Hi #{name},
+  
+  p Thank you for signing up for #{appName}! To get started, we need to verify your email address.
+  
+  p Please click the button below to verify your email:
+  
+  .text-center
+    a.button(href=verificationUrl) Verify Email Address
+  
+  .alert.alert-info
+    p
+      strong Can't click the button?
+      br
+      | Copy and paste this link into your browser:
+      br
+      small(style="word-break: break-all; color: #007bff;") #{verificationUrl}
+  
+  .alert.alert-warning
+    p
+      strong Important:
+      | This verification link will expire in #{expiresIn}.
+  
+  p If you didn't create an account with #{appName}, please ignore this email.
+  
+  .divider
+  
+  p
+    | Best regards,
+    br
+    | The #{appName} Team

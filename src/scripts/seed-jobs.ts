@@ -227,8 +227,8 @@ async function seedJobs() {
         jobsScraped: sampleJobs.length,
         jobsNew: newJobs,
         jobsUpdated: updatedJobs,
-        startTime: new Date(),
-        endTime: new Date(),
+        startedAt: new Date(),
+        completedAt: new Date(),
         duration: 1
       }
     });

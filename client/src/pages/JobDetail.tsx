@@ -7,7 +7,7 @@ import {
   BuildingOfficeIcon, 
   CurrencyDollarIcon, 
   CalendarIcon,
-  ExternalLinkIcon,
+  ArrowTopRightOnSquareIcon,
   ClockIcon,
   TagIcon
 } from '@heroicons/react/24/outline';
@@ -154,7 +154,7 @@ const JobDetail: React.FC = () => {
             className="inline-flex items-center btn-primary text-lg px-8 py-3"
           >
             Apply on {job.sourcePortal}
-            <ExternalLinkIcon className="h-5 w-5 ml-2" />
+            <ArrowTopRightOnSquareIcon className="h-5 w-5 ml-2" />
           </a>
         </div>
       </div>

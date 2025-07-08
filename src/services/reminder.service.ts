@@ -8,8 +8,8 @@ import {
   AUTOMATED_REMINDERS,
   AutomatedReminderConfig
 } from '../types/application';
-import { logger } from '../utils/logger';
-import { EmailService } from '../auth/email.service';
+import logger from '../utils/logger';
+import { EmailService } from './email.service';
 
 export class ReminderService {
   private emailService: EmailService;

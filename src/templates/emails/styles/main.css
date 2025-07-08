@@ -1,0 +1,332 @@
+/* Reset styles */
+body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+
+/* Base styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+  background-color: #f4f4f4;
+}
+
+.email-wrapper {
+  width: 100%;
+  background-color: #f4f4f4;
+  padding: 20px 0;
+}
+
+.email-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styles */
+.email-header {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 30px 40px;
+  text-align: center;
+}
+
+.email-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.email-header h2 {
+  margin: 20px 0 0;
+  font-size: 20px;
+  font-weight: 400;
+  opacity: 0.95;
+}
+
+/* Content styles */
+.email-content {
+  padding: 40px;
+}
+
+.email-content h2 {
+  margin: 0 0 20px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #222222;
+}
+
+.email-content h3 {
+  margin: 30px 0 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.email-content p {
+  margin: 0 0 16px;
+  color: #555555;
+}
+
+.email-content ul {
+  margin: 0 0 20px;
+  padding-left: 20px;
+}
+
+.email-content li {
+  margin-bottom: 8px;
+  color: #555555;
+}
+
+/* Button styles */
+.button {
+  display: inline-block;
+  padding: 14px 32px;
+  margin: 20px 0;
+  background-color: #007bff;
+  color: #ffffff !important;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button-secondary {
+  background-color: #6c757d;
+}
+
+.button-secondary:hover {
+  background-color: #5a6268;
+}
+
+.button-success {
+  background-color: #28a745;
+}
+
+.button-success:hover {
+  background-color: #218838;
+}
+
+.button-danger {
+  background-color: #dc3545;
+}
+
+.button-danger:hover {
+  background-color: #c82333;
+}
+
+/* Alert box styles */
+.alert {
+  padding: 16px 20px;
+  margin: 20px 0;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+
+.alert-info {
+  background-color: #e7f3ff;
+  border-color: #b8daff;
+  color: #004085;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffeaa7;
+  color: #856404;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+/* Card styles */
+.card {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.card-title {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.card-text {
+  margin: 0;
+  color: #555555;
+}
+
+/* Info box styles */
+.info-box {
+  background-color: #ffffff;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #555555;
+}
+
+.info-value {
+  color: #333333;
+}
+
+/* Footer styles */
+.email-footer {
+  background-color: #f8f9fa;
+  padding: 30px 40px;
+  text-align: center;
+  border-top: 1px solid #e9ecef;
+}
+
+.footer-content {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.footer-text {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.footer-links {
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+
+.footer-links a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-address {
+  margin: 0;
+  font-size: 13px;
+  color: #868e96;
+  line-height: 1.5;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: #6c757d;
+}
+
+.mt-4 {
+  margin-top: 24px;
+}
+
+.mb-4 {
+  margin-bottom: 24px;
+}
+
+.divider {
+  height: 1px;
+  background-color: #e9ecef;
+  margin: 30px 0;
+}
+
+/* Job listing styles */
+.job-card {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.job-card:hover {
+  border-color: #007bff;
+}
+
+.job-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.job-title a {
+  color: #333333;
+  text-decoration: none;
+}
+
+.job-company {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #555555;
+}
+
+.job-meta {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* Responsive styles */
+@media only screen and (max-width: 600px) {
+  .email-container {
+    width: 100% !important;
+    border-radius: 0;
+  }
+  
+  .email-header,
+  .email-content,
+  .email-footer {
+    padding: 30px 20px;
+  }
+  
+  .button {
+    display: block;
+    width: 100%;
+  }
+}

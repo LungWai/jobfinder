@@ -1,0 +1,33 @@
+extends ../html
+
+block header
+  h2 Test Email
+
+block content
+  .alert.alert-success
+    h3(style="margin-top: 0;") ✅ Email Configuration Test Successful!
+    p #{message}
+  
+  h3 Email Configuration Details
+  .info-box
+    .info-row
+      span.info-label SMTP Host:
+      span.info-value #{process.env.SMTP_HOST || 'Not configured'}
+    .info-row
+      span.info-label SMTP Port:
+      span.info-value #{process.env.SMTP_PORT || 'Not configured'}
+    .info-row
+      span.info-label From Address:
+      span.info-value #{process.env.SMTP_FROM || process.env.SMTP_USER || 'Not configured'}
+    .info-row
+      span.info-label Environment:
+      span.info-value #{process.env.NODE_ENV || 'development'}
+  
+  p This test email confirms that your email service is properly configured and working.
+  
+  .divider
+  
+  p
+    | Best regards,
+    br
+    | The #{appName} Team

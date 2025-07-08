@@ -1,0 +1,90 @@
+extends ../html
+
+block header
+  h2 Interview Reminder
+
+block content
+  p Hi #{name},
+  
+  p This is a reminder about your upcoming interview:
+  
+  .info-box
+    .info-row
+      span.info-label Company:
+      span.info-value #{interview.company}
+    .info-row
+      span.info-label Position:
+      span.info-value #{interview.position}
+    .info-row
+      span.info-label Date:
+      span.info-value #{interview.formattedDate}
+    .info-row
+      span.info-label Time:
+      span.info-value #{interview.time}
+    if interview.type
+      .info-row
+        span.info-label Interview Type:
+        span.info-value 
+          case interview.type
+            when 'in_person'
+              | In-Person Interview
+            when 'phone'
+              | Phone Interview
+            when 'video'
+              | Video Interview
+            default
+              | #{interview.type}
+    if interview.location
+      .info-row
+        span.info-label Location:
+        span.info-value #{interview.location}
+    if interview.meetingLink
+      .info-row
+        span.info-label Meeting Link:
+        span.info-value
+          a(href=interview.meetingLink) Join Video Call
+  
+  if interview.notes
+    h3 Additional Notes
+    .card
+      p #{interview.notes}
+  
+  h3 Interview Tips
+  
+  case interview.type
+    when 'video'
+      ul
+        li Test your camera and microphone beforehand
+        li Ensure you have a stable internet connection
+        li Choose a quiet, well-lit location
+        li Have a backup phone number ready
+        li Join the call 5 minutes early
+    when 'phone'
+      ul
+        li Find a quiet place with good reception
+        li Have your resume and notes ready
+        li Keep a glass of water nearby
+        li Smile while talking - it comes through in your voice
+        li Be ready 5 minutes before the scheduled time
+    default
+      ul
+        li Research the company and role thoroughly
+        li Prepare answers to common interview questions
+        li Bring multiple copies of your resume
+        li Dress professionally
+        li Arrive 10-15 minutes early
+  
+  .text-center
+    a.button(href=dashboardUrl) View All Interviews
+  
+  .alert.alert-info
+    p
+      strong Need to reschedule?
+      | Contact the interviewer as soon as possible if you need to change the interview time.
+  
+  .divider
+  
+  p
+    | Good luck with your interview!
+    br
+    | The #{appName} Team

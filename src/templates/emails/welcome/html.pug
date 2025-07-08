@@ -1,0 +1,50 @@
+extends ../html
+
+block header
+  h2 Welcome to #{appName}!
+
+block content
+  p Hi #{name},
+  
+  p Congratulations! Your email has been verified and your account is now fully activated.
+  
+  p We're excited to have you on board. Here's what you can do with #{appName}:
+  
+  .features
+    each feature in features
+      .card
+        h3.card-title #{feature.title}
+        p.card-text #{feature.description}
+  
+  .text-center
+    a.button(href=dashboardUrl) Go to Dashboard
+  
+  h3 Getting Started Tips
+  
+  ul
+    li 
+      strong Complete your profile
+      | - Add your skills, experience, and preferences to get better job matches
+    li 
+      strong Set up job alerts
+      | - Get notified when new jobs matching your criteria are posted
+    li 
+      strong Upload your resume
+      | - Make it easier to apply to jobs with one-click applications
+    li 
+      strong Follow companies
+      | - Stay updated on new job openings from your favorite employers
+  
+  .alert.alert-info
+    p
+      strong Need help?
+      | Check out our 
+      a(href=`${frontendUrl}/help`) Help Center
+      |  or reply to this email with any questions.
+  
+  .divider
+  
+  p
+    | Happy job hunting!
+    br
+    | The #{appName} Team

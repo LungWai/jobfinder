@@ -1,0 +1,18 @@
+extends ../text
+
+block header
+  | VERIFY YOUR EMAIL ADDRESS
+  | ========================
+
+block content
+  | Hi #{name},
+  | 
+  | Thank you for signing up for #{appName}! To get started, we need to verify your email address.
+  | 
+  | Please copy and paste this link into your browser to verify your email:
+  | 
+  | #{verificationUrl}
+  | 
+  | Important: This verification link will expire in #{expiresIn}.
+  | 
+  | If you didn't create an account with #{appName}, please ignore this email.

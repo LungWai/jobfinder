@@ -1,0 +1,78 @@
+extends ../html
+
+block header
+  h2(style=`background-color: ${alertType === 'suspicious_activity' ? '#dc3545' : '#ffc107'}; color: ${alertType === 'suspicious_activity' ? '#ffffff' : '#333333'};`)
+    | ⚠️ Security Alert
+
+block content
+  p Hi #{name},
+  
+  .alert(class=`alert-${alertType === 'suspicious_activity' ? 'danger' : 'warning'}`)
+    h3(style="margin-top: 0;") #{alertTitle}
+    p #{alertDescription}
+  
+  h3 Activity Details
+  .info-box
+    .info-row
+      span.info-label Time:
+      span.info-value #{details.time}
+    if details.ip
+      .info-row
+        span.info-label IP Address:
+        span.info-value #{details.ip}
+    if details.location
+      .info-row
+        span.info-label Location:
+        span.info-value #{details.location}
+    if details.device
+      .info-row
+        span.info-label Device:
+        span.info-value #{details.device}
+    if details.browser
+      .info-row
+        span.info-label Browser:
+        span.info-value #{details.browser}
+  
+  case alertType
+    when 'login'
+      p If this was you, no action is needed. Your account is secure.
+      p If you don't recognize this login attempt, please secure your account immediately.
+    when 'password_change'
+      p Your password has been successfully updated. If you made this change, no further action is required.
+      p If you didn't change your password, your account may be compromised.
+    when 'suspicious_activity'
+      .alert.alert-danger
+        p
+          strong Immediate action required!
+          | We've temporarily locked your account for security reasons.
+  
+  if alertType !== 'password_change'
+    h3 Secure Your Account
+    p If you don't recognize this activity:
+    ol
+      li Change your password immediately
+      li Review your recent account activity
+      li Enable two-factor authentication
+      li Check your email settings and filters
+    
+    .text-center
+      a.button.button-danger(href=securityUrl) Secure My Account Now
+  
+  h3 Security Tips
+  ul
+    li Use a strong, unique password for your #{appName} account
+    li Never share your password with anyone
+    li Be cautious of phishing emails asking for your credentials
+    li Keep your email address up to date
+    li Regularly review your account activity
+  
+  .divider
+  
+  p
+    | Stay safe,
+    br
+    | The #{appName} Security Team
+  
+  p.text-muted(style="font-size: 14px;")
+    | If you need help, contact our support team immediately at 
+    a(href=`mailto:security@${appName.toLowerCase().replace(' ', '')}.com`) security@#{appName.toLowerCase().replace(' ', '')}.com

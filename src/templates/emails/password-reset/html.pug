@@ -1,0 +1,40 @@
+extends ../html
+
+block header
+  h2 Password Reset Request
+
+block content
+  p Hi #{name},
+  
+  p We received a request to reset your password for your #{appName} account.
+  
+  p Click the button below to create a new password:
+  
+  .text-center
+    a.button.button-danger(href=resetUrl) Reset Password
+  
+  .alert.alert-info
+    p
+      strong Can't click the button?
+      br
+      | Copy and paste this link into your browser:
+      br
+      small(style="word-break: break-all; color: #dc3545;") #{resetUrl}
+  
+  .alert.alert-warning
+    p
+      strong Security Notice:
+    ul
+      li This link will expire in #{expiresIn}
+      li If you didn't request this password reset, please ignore this email
+      li Your password won't change until you create a new one
+      li For security reasons, this link can only be used once
+  
+  p If you're having trouble or didn't request this password reset, please contact our support team immediately.
+  
+  .divider
+  
+  p
+    | Stay secure,
+    br
+    | The #{appName} Security Team

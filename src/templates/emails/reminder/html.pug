@@ -1,0 +1,32 @@
+extends ../html
+
+block header
+  h2 Reminder
+
+block content
+  p Hi #{name},
+  
+  p This is a friendly reminder:
+  
+  .card
+    h3.card-title #{title}
+    if description
+      p.card-text #{description}
+    if context
+      p.text-muted
+        small #{context}
+  
+  .text-center
+    a.button(href=actionUrl) #{actionText}
+  
+  .alert.alert-info
+    p
+      strong Tip:
+      | You can manage all your reminders and notifications in your dashboard settings.
+  
+  .divider
+  
+  p
+    | Stay organized,
+    br
+    | The #{appName} Team

@@ -1,0 +1,37 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    title= subject
+    style
+      include styles/main.css
+  body
+    .email-wrapper
+      .email-container
+        //- Header
+        .email-header
+          .logo
+            h1= appName
+          block header
+        
+        //- Content
+        .email-content
+          block content
+        
+        //- Footer
+        .email-footer
+          block footer
+            .footer-content
+              p.footer-text
+                | &copy; #{year} #{appName}. All rights reserved.
+              .footer-links
+                a(href=`${frontendUrl}/privacy`) Privacy Policy
+                | &nbsp;&bull;&nbsp;
+                a(href=`${frontendUrl}/terms`) Terms of Service
+                | &nbsp;&bull;&nbsp;
+                a(href=`${frontendUrl}/contact`) Contact Us
+              p.footer-address
+                | If you have any questions, please don't hesitate to contact our support team.
+              block unsubscribe

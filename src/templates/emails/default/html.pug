@@ -1,0 +1,22 @@
+extends ../html
+
+block content
+  if title
+    h2 #{title}
+  
+  if message
+    p #{message}
+  
+  if content
+    | !{content}
+  
+  if actionUrl && actionText
+    .text-center
+      a.button(href=actionUrl) #{actionText}
+  
+  .divider
+  
+  p
+    | Best regards,
+    br
+    | The #{appName} Team

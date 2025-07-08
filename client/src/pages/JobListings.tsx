@@ -8,7 +8,7 @@ import {
   BuildingOfficeIcon,
   CurrencyDollarIcon,
   CalendarIcon,
-  ExternalLinkIcon
+  ArrowTopRightOnSquareIcon
 } from '@heroicons/react/24/outline';
 import { jobsApi } from '../services/api';
 import { JobFilters } from '../types/job';

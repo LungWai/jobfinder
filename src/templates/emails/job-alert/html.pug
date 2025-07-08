@@ -1,0 +1,51 @@
+extends ../html
+
+block header
+  h2 New Jobs Matching Your Search
+
+block content
+  p Hi #{name},
+  
+  p We found #{jobCount} new job#{jobCount === 1 ? '' : 's'} matching your search criteria: 
+    strong #{searchCriteria}
+  
+  .divider
+  
+  each job in jobs
+    .job-card
+      h3.job-title
+        a(href=job.url) #{job.title}
+      p.job-company #{job.company}
+      p.job-meta
+        | 📍 #{job.location}
+        if job.salary
+          | &nbsp;&bull;&nbsp; 💰 #{job.salary}
+        | &nbsp;&bull;&nbsp; 🕒 #{job.postedAgo}
+  
+  if jobs.length >= 5
+    .text-center.mt-4
+      p
+        strong And more jobs are available!
+      a.button(href=`${frontendUrl}/jobs?search=${encodeURIComponent(searchCriteria)}`) View All Matching Jobs
+  
+  .divider
+  
+  .alert.alert-info
+    p
+      strong Pro tip:
+      | Save time by setting up more specific job alerts to get the most relevant opportunities delivered to your inbox.
+  
+  .text-center
+    a(href=manageAlertsUrl) Manage Your Job Alerts
+  
+  .divider
+  
+  p
+    | Happy job hunting!
+    br
+    | The #{appName} Team
+
+block unsubscribe
+  p.text-muted(style="font-size: 12px; margin-top: 20px;")
+    | You received this email because you have job alerts enabled. 
+    a(href=`${manageAlertsUrl}?unsubscribe=true`) Unsubscribe from job alerts

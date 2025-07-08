@@ -1,0 +1,85 @@
+extends ../html
+
+block header
+  h2 Application Status Update
+
+block content
+  p Hi #{name},
+  
+  p We have an update on your job application:
+  
+  .info-box
+    .info-row
+      span.info-label Position:
+      span.info-value #{application.jobTitle}
+    .info-row
+      span.info-label Company:
+      span.info-value #{application.company}
+    .info-row
+      span.info-label Previous Status:
+      span.info-value #{application.previousStatus.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+    .info-row
+      span.info-label(style=`color: ${application.statusColor};`)
+        strong New Status:
+      span.info-value(style=`color: ${application.statusColor}; font-weight: 600;`)
+        | #{application.newStatus.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+  
+  .alert(class=`alert-${application.newStatus === 'rejected' ? 'danger' : application.newStatus === 'offered' || application.newStatus === 'shortlisted' || application.newStatus === 'interview_scheduled' ? 'success' : 'info'}`)
+    p #{application.statusMessage}
+  
+  if application.message
+    h3 Message from the Employer
+    .card
+      p #{application.message}
+  
+  case application.newStatus
+    when 'interview_scheduled'
+      h3 What's Next?
+      ul
+        li Check your email for interview details
+        li Research the company and prepare your questions
+        li Review the job description and requirements
+        li Practice common interview questions
+    when 'shortlisted'
+      h3 What's Next?
+      ul
+        li You may be contacted for an interview soon
+        li Keep your phone and email accessible
+        li Continue preparing for potential interviews
+        li Update your availability if needed
+    when 'offered'
+      h3 Congratulations! 🎉
+      p This is exciting news! Here's what you should do next:
+      ul
+        li Review the offer details carefully
+        li Consider salary, benefits, and work conditions
+        li Ask any questions you have about the role
+        li Respond within the specified timeframe
+    when 'rejected'
+      h3 Don't Give Up!
+      p Job searching can be challenging, but every application is a learning opportunity.
+      ul
+        li Review your application for areas to improve
+        li Continue applying to other opportunities
+        li Consider updating your resume or cover letter
+        li Keep building your skills and experience
+  
+  .text-center
+    a.button(href=applicationUrl) View Application Details
+    if application.newStatus !== 'rejected' && application.newStatus !== 'withdrawn'
+      br
+      a.button.button-secondary(href=dashboardUrl) View All Applications
+  
+  if application.newStatus === 'rejected'
+    .mt-4
+      p
+        | Keep going! The right opportunity is out there waiting for you.
+        br
+        a(href=`${frontendUrl}/jobs`) Browse More Jobs
+  
+  .divider
+  
+  p
+    | Best regards,
+    br
+    | The #{appName} Team

@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { Login, Register, ForgotPassword, ResetPassword, ProtectedRoute, EmailVerification } from './components/auth';
+import { queryClient } from './lib/react-query';
+import { LoadingProvider } from './utils/loadingState';
 
 // Simple components for now
 const JobListings = () => {
@@ -84,6 +89,7 @@ const JobListings = () => {
 const Dashboard = () => {
   const [scraping, setScraping] = useState(false);
   const [message, setMessage] = useState('');
+  const { logout, user } = useAuth();
 
   const triggerScraping = async () => {
     setScraping(true);
@@ -107,7 +113,18 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Dashboard</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1>
+          <div className="flex items-center space-x-4">
+            <span className="text-gray-600">Welcome, {user?.name || user?.email}</span>
+            <button
+              onClick={logout}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Scraping Controls</h2>
@@ -153,6 +170,8 @@ const Dashboard = () => {
 };
 
 const Welcome = () => {
+  const { isAuthenticated } = useAuth();
+  
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto">
@@ -186,18 +205,37 @@ const Welcome = () => {
           </div>
 
           <div className="flex space-x-4">
-            <button
-              onClick={() => window.location.href = '/jobs'}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-            >
-              View Jobs
-            </button>
-            <button
-              onClick={() => window.location.href = '/dashboard'}
-              className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
-            >
-              Start Scraping
-            </button>
+            {isAuthenticated ? (
+              <>
+                <button
+                  onClick={() => window.location.href = '/jobs'}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                >
+                  View Jobs
+                </button>
+                <button
+                  onClick={() => window.location.href = '/dashboard'}
+                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                >
+                  Start Scraping
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => window.location.href = '/login'}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => window.location.href = '/register'}
+                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                >
+                  Register
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -205,26 +243,46 @@ const Welcome = () => {
   );
 };
 
-// Create a client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      retry: 1,
-    },
-  },
-});
-
 function App() {
+  // Listen for auth logout events
+  useEffect(() => {
+    const handleLogout = () => {
+      // Clear query cache on logout
+      queryClient.clear();
+      // Redirect to login page
+      window.location.href = '/login';
+    };
+
+    window.addEventListener('auth:logout', handleLogout);
+    return () => window.removeEventListener('auth:logout', handleLogout);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Welcome />} />
-          <Route path="/jobs" element={<JobListings />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </Router>
+      <LoadingProvider>
+        <Router>
+          <AuthProvider>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<Welcome />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
+              <Route path="/verify-email/:token" element={<EmailVerification />} />
+              
+              {/* Protected routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/jobs" element={<JobListings />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+              </Route>
+            </Routes>
+          </AuthProvider>
+        </Router>
+      </LoadingProvider>
+      
+      {/* React Query Devtools - only in development */}
+      {/* {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />} */}
     </QueryClientProvider>
   );
 }
