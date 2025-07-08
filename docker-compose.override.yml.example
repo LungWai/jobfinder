@@ -1,0 +1,27 @@
+# Example override file for custom Docker Compose configurations
+# Copy this to docker-compose.override.yml and modify as needed
+
+version: '3.8'
+
+services:
+  postgres:
+    # Example: Use a different PostgreSQL version
+    # image: postgres:15-alpine
+    
+    # Example: Use custom port
+    # ports:
+    #   - "5433:5432"
+    
+    # Example: Add more environment variables
+    # environment:
+    #   POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+    
+    # Example: Mount additional configuration
+    # volumes:
+    #   - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    #   - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
+
+  # Example: Disable pgAdmin in development
+  # pgadmin:
+  #   profiles:
+  #     - tools

@@ -1,36 +1,44 @@
-import { WebFetchScraper } from './web-fetch-scraper';
+import { JobsDBScraper } from './jobsdb-scraper';
+import { RecruitScraper } from './recruit-scraper';
+import { GoodJobsScraper } from './goodjobs-scraper';
+import { UniversityScraper } from './university-scraper';
 import { JobService } from '../database/job-service';
 import { ScrapingResult } from '../types/job';
+import { BaseScraper } from './base-scraper';
 import logger from '../utils/logger';
 
 export class ScraperManager {
   private jobService: JobService;
-  private webFetchScraper: WebFetchScraper;
+  private scrapers: Map<string, BaseScraper>;
 
   constructor() {
     this.jobService = new JobService();
-    this.webFetchScraper = new WebFetchScraper();
+    this.scrapers = new Map<string, BaseScraper>();
+    
+    // Initialize all available scrapers
+    this.scrapers.set('jobsdb', new JobsDBScraper());
+    this.scrapers.set('recruit', new RecruitScraper());
+    this.scrapers.set('ctgoodjobs', new GoodJobsScraper());
+    this.scrapers.set('university', new UniversityScraper());
   }
 
   /**
    * Run a specific scraper
    */
   async runScraper(scraperName: string): Promise<ScrapingResult> {
+    const startTime = Date.now();
+    
     try {
       logger.info(`Running ${scraperName} scraper`);
 
-      let result: ScrapingResult;
-
-      switch (scraperName.toLowerCase()) {
-        case 'jobsdb':
-          result = await this.webFetchScraper.scrapeJobsDB();
-          break;
-        case 'recruit':
-          result = await this.webFetchScraper.scrapeRecruit();
-          break;
-        default:
-          throw new Error(`Scraper '${scraperName}' not supported. Available: jobsdb, recruit`);
+      const scraper = this.scrapers.get(scraperName.toLowerCase());
+      if (!scraper) {
+        const available = Array.from(this.scrapers.keys()).join(', ');
+        throw new Error(`Scraper '${scraperName}' not supported. Available: ${available}`);
       }
+
+      // Run the scraper
+      const result = await scraper.scrape();
 
       // Log the result
       await this.jobService.logScrapingResult(result);
@@ -46,7 +54,7 @@ export class ScraperManager {
         jobsUpdated: 0,
         errors: [error instanceof Error ? error.message : String(error)],
         portal: scraperName,
-        duration: 0
+        duration: Math.round((Date.now() - startTime) / 1000)
       };
 
       await this.jobService.logScrapingResult(errorResult);
@@ -59,9 +67,9 @@ export class ScraperManager {
    */
   async runAllScrapers(): Promise<ScrapingResult[]> {
     const results: ScrapingResult[] = [];
-    const scraperNames = ['jobsdb', 'recruit'];
+    const scraperNames = Array.from(this.scrapers.keys());
 
-    logger.info('Starting all scrapers');
+    logger.info(`Starting all scrapers: ${scraperNames.join(', ')}`);
 
     for (const name of scraperNames) {
       try {
@@ -103,7 +111,21 @@ export class ScraperManager {
    * Get available scrapers
    */
   getAvailableScrapers(): string[] {
-    return ['jobsdb', 'recruit'];
+    return Array.from(this.scrapers.keys());
+  }
+
+  /**
+   * Get scraper status
+   */
+  async getScraperStatus(): Promise<{ name: string; available: boolean }[]> {
+    const status = [];
+    for (const [name, scraper] of this.scrapers) {
+      status.push({
+        name,
+        available: scraper !== null
+      });
+    }
+    return status;
   }
 
   /**

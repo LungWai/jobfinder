@@ -9,9 +9,19 @@ import fs from 'fs';
 import logger from '../utils/logger';
 import jobRoutes from './routes/jobs';
 import scrapingRoutes from './routes/scraping';
+import authRoutes from './routes/auth';
+import applicationRoutes from './routes/applications';
+import interviewRoutes from './routes/interviews';
+import documentRoutes from './routes/documents';
+import reminderRoutes from './routes/reminders';
+import profileRoutes from './routes/profile';
+import { validateAuthConfig } from '../config/auth.config';
 
 // Load environment variables
 dotenv.config();
+
+// Validate authentication configuration
+validateAuthConfig();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -62,9 +72,18 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Static file serving for uploads
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
 // API routes
+app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/scraping', scrapingRoutes);
+app.use('/api/applications', applicationRoutes);
+app.use('/api/interviews', interviewRoutes);
+app.use('/api/documents', documentRoutes);
+app.use('/api/reminders', reminderRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Serve static files from client build (for production)
 if (process.env.NODE_ENV === 'production') {

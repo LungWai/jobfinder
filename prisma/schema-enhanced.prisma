@@ -106,17 +106,15 @@ model User {
   id                    String    @id @default(cuid())
   email                 String    @unique
   password              String
-  name                  String?
-  role                  String    @default("USER")
+  name                  String
   isActive              Boolean   @default(true)
-  isVerified            Boolean   @default(false)
-  verificationToken     String?   @unique
-  verificationTokenExpiry DateTime?
-  resetToken            String?   @unique
-  resetTokenExpiry      DateTime?
-  lastLogin             DateTime?
+  emailVerified         Boolean   @default(false)
+  emailVerificationToken String?
+  resetPasswordToken    String?
+  resetPasswordExpiry   DateTime?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  lastLoginAt           DateTime?
   
   // Relations
   profile               UserProfile?
@@ -125,9 +123,6 @@ model User {
   savedSearches         SavedSearch[]
   documents             ApplicationDocument[]
   reminders             ApplicationReminder[]
-  refreshTokens         RefreshToken[]
-  loginAttempts         LoginAttempt[]
-  activityLogs          ActivityLog[]
   
   @@index([email])
   @@map("users")
@@ -599,60 +594,4 @@ enum LanguageProficiency {
   PROFESSIONAL
   CONVERSATIONAL
   BASIC
-}
-
-// ============ AUTHENTICATION MODELS ============
-
-model RefreshToken {
-  id                    String    @id @default(cuid())
-  token                 String    @unique
-  userId                String
-  expiresAt             DateTime
-  createdAt             DateTime  @default(now())
-  
-  // Relations
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  @@index([userId])
-  @@index([expiresAt])
-  @@map("refresh_tokens")
-}
-
-model LoginAttempt {
-  id                    String    @id @default(cuid())
-  email                 String
-  userId                String?
-  ipAddress             String
-  userAgent             String?
-  success               Boolean
-  failureReason         String?
-  attemptedAt           DateTime  @default(now())
-  
-  // Relations
-  user                  User?     @relation(fields: [userId], references: [id])
-  
-  @@index([email])
-  @@index([ipAddress])
-  @@index([attemptedAt])
-  @@map("login_attempts")
-}
-
-model ActivityLog {
-  id                    String    @id @default(cuid())
-  userId                String
-  action                String
-  entityType            String?
-  entityId              String?
-  ipAddress             String?
-  userAgent             String?
-  metadata              Json?
-  createdAt             DateTime  @default(now())
-  
-  // Relations
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  @@index([userId])
-  @@index([action])
-  @@index([createdAt])
-  @@map("activity_logs")
 }

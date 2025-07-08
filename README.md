@@ -1,24 +1,33 @@
-# Hong Kong Job Scraper
+# Hong Kong Job Finder
 
-A comprehensive web application that scrapes job listings from multiple Hong Kong job portals and displays them in a unified, searchable interface.
+A comprehensive web application that scrapes real job listings from multiple Hong Kong job portals and provides a unified platform for job searching and application management.
 
 ## Features
 
-- **Multi-Portal Scraping**: Scrapes jobs from JobsDB, CT Good Jobs, Recruit.com.hk, and University job portals
+### Current Features
+- **Multi-Portal Scraping**: Real job extraction from JobsDB, Recruit.com.hk, CT Good Jobs (ready)
+- **Playwright-based Scrapers**: Browser automation with anti-detection measures
 - **Unified Interface**: Clean, responsive React frontend with advanced filtering and search
-- **Real-time Data**: Regular updates with deduplication and data normalization
-- **Dashboard**: Monitor scraping operations and view statistics
+- **Dashboard**: Monitor scraping operations and view real-time statistics
 - **RESTful API**: Well-documented API for job data access
+- **Data Deduplication**: Content-based hashing to prevent duplicate listings
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
+
+### Planned Features (In Development)
+- **Job Application Tracking**: Manage CV preparation, application status, interview schedules
+- **Automated Scheduling**: Redis/Bull-based job queue for scheduled scraping
+- **Email Alerts**: Notifications for new jobs matching saved searches
+- **PostgreSQL Migration**: Enhanced performance and scalability
+- **Search Tags**: Advanced tagging system for better job categorization
 
 ## Tech Stack
 
 ### Backend
 - **Node.js** with Express and TypeScript
-- **PostgreSQL** database with Prisma ORM
-- **Playwright** for web scraping
-- **Winston** for logging
-- **node-cron** for scheduled jobs
+- **SQLite** database with Prisma ORM (PostgreSQL migration planned)
+- **Playwright** for web scraping with anti-detection
+- **Winston** for comprehensive logging
+- **node-cron** for scheduled jobs (ready for implementation)
 
 ### Frontend
 - **React** with TypeScript and Vite
@@ -30,8 +39,8 @@ A comprehensive web application that scrapes job listings from multiple Hong Kon
 ## Prerequisites
 
 - Node.js 18+ 
-- PostgreSQL 12+
 - npm or yarn
+- Playwright browsers (will be installed automatically)
 
 ## Installation
 
