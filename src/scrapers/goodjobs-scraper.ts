@@ -1,8 +1,11 @@
 import { BaseScraper } from './base-scraper';
 import { JobListing, ScrapingResult, ScrapingConfig } from '../types/job';
+import { JobService } from '../database/job-service';
 import logger from '../utils/logger';
 
 export class GoodJobsScraper extends BaseScraper {
+  private jobService: JobService;
+
   constructor() {
     const config: ScrapingConfig = {
       portal: 'CT Good Jobs',
@@ -24,6 +27,7 @@ export class GoodJobsScraper extends BaseScraper {
       maxRetries: 3
     };
     super(config);
+    this.jobService = new JobService();
   }
 
   async scrape(): Promise<ScrapingResult> {
@@ -53,6 +57,7 @@ export class GoodJobsScraper extends BaseScraper {
 
       let currentPage = 1;
       const maxPages = this.config.pagination?.maxPages || 5;
+      const jobService = this.jobService;
 
       while (currentPage <= maxPages) {
         logger.info(`Scraping page ${currentPage} of ${this.config.portal}`);
@@ -69,9 +74,18 @@ export class GoodJobsScraper extends BaseScraper {
           for (const jobElement of jobElements) {
             try {
               const jobData = await this.extractJobData(jobElement);
-              if (jobData) {
+              if (jobData && jobData.title && jobData.company) {
+                // Save to database
+                const saveResult = await jobService.saveJob(jobData);
                 result.jobsScraped++;
-                logger.debug(`Extracted job: ${jobData.title} at ${jobData.company}`);
+                
+                if (saveResult.isNew) {
+                  result.jobsNew++;
+                  logger.info(`New job saved: ${jobData.title} at ${jobData.company}`);
+                } else {
+                  result.jobsUpdated++;
+                  logger.debug(`Job updated: ${jobData.title} at ${jobData.company}`);
+                }
               }
             } catch (error) {
               logger.error('Error processing job element:', error);
@@ -109,9 +123,8 @@ export class GoodJobsScraper extends BaseScraper {
       }
 
       result.success = result.errors.length === 0 || result.jobsScraped > 0;
-      result.jobsNew = result.jobsScraped; // For now, assume all are new
       
-      logger.info(`Completed scraping ${this.config.portal}. Jobs found: ${result.jobsScraped}`);
+      logger.info(`Completed scraping ${this.config.portal}. Jobs found: ${result.jobsScraped}, New: ${result.jobsNew}, Updated: ${result.jobsUpdated}`);
 
     } catch (error) {
       logger.error(`Fatal error scraping ${this.config.portal}:`, error);
@@ -150,6 +163,15 @@ export class GoodJobsScraper extends BaseScraper {
         if (typeText) {
           baseData.employmentType = typeText.trim();
         }
+      }
+
+      // Set source portal
+      baseData.sourcePortal = this.config.portal;
+
+      // Ensure we have required fields
+      if (!baseData.title || !baseData.company) {
+        logger.warn('Missing required fields in GoodJobs job data', { title: baseData.title, company: baseData.company });
+        return null;
       }
 
       return baseData;

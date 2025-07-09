@@ -1,8 +1,10 @@
 import { BaseScraper } from './base-scraper';
 import { JobListing, ScrapingResult, ScrapingConfig } from '../types/job';
+import { JobService } from '../database/job-service';
 import logger from '../utils/logger';
 
 export class UniversityScraper extends BaseScraper {
+  private jobService: JobService;
   private universities = [
     { name: 'University of Hong Kong', url: 'https://jobs.hku.hk' },
     { name: 'Chinese University of Hong Kong', url: 'https://www.cuhk.edu.hk/ohr/index.php/en/career-opportunities' },
@@ -35,6 +37,7 @@ export class UniversityScraper extends BaseScraper {
       maxRetries: 2
     };
     super(config);
+    this.jobService = new JobService();
   }
 
   async scrape(): Promise<ScrapingResult> {
@@ -57,6 +60,8 @@ export class UniversityScraper extends BaseScraper {
       }
 
       logger.info(`Starting to scrape ${this.config.portal}`);
+
+      const jobService = this.jobService;
 
       // For this MVP, we'll focus on a general university jobs portal
       // In production, you would iterate through each university
@@ -83,9 +88,18 @@ export class UniversityScraper extends BaseScraper {
             for (const jobElement of jobElements) {
               try {
                 const jobData = await this.extractJobData(jobElement);
-                if (jobData) {
+                if (jobData && jobData.title && jobData.company) {
+                  // Save to database
+                  const saveResult = await jobService.saveJob(jobData);
                   result.jobsScraped++;
-                  logger.debug(`Extracted job: ${jobData.title} at ${jobData.company}`);
+                  
+                  if (saveResult.isNew) {
+                    result.jobsNew++;
+                    logger.info(`New job saved: ${jobData.title} at ${jobData.company}`);
+                  } else {
+                    result.jobsUpdated++;
+                    logger.debug(`Job updated: ${jobData.title} at ${jobData.company}`);
+                  }
                 }
               } catch (error) {
                 logger.error('Error processing job element:', error);
@@ -131,9 +145,8 @@ export class UniversityScraper extends BaseScraper {
       }
 
       result.success = result.errors.length === 0 || result.jobsScraped > 0;
-      result.jobsNew = result.jobsScraped; // For now, assume all are new
       
-      logger.info(`Completed scraping ${this.config.portal}. Jobs found: ${result.jobsScraped}`);
+      logger.info(`Completed scraping ${this.config.portal}. Jobs found: ${result.jobsScraped}, New: ${result.jobsNew}, Updated: ${result.jobsUpdated}`);
 
     } catch (error) {
       logger.error(`Fatal error scraping ${this.config.portal}:`, error);
@@ -185,6 +198,15 @@ export class UniversityScraper extends BaseScraper {
         if (deptText) {
           baseData.description += `\nDepartment: ${deptText.trim()}`;
         }
+      }
+
+      // Set source portal
+      baseData.sourcePortal = this.config.portal;
+
+      // Ensure we have required fields
+      if (!baseData.title || !baseData.company) {
+        logger.warn('Missing required fields in University job data', { title: baseData.title, company: baseData.company });
+        return null;
       }
 
       return baseData;

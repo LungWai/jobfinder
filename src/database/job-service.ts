@@ -189,9 +189,9 @@ export class JobService {
           jobsScraped: result.jobsScraped,
           jobsNew: result.jobsNew,
           jobsUpdated: result.jobsUpdated,
-          errorMessage: result.errors.length > 0 ? result.errors.join('; ') : null,
-          startTime: new Date(Date.now() - result.duration * 1000),
-          endTime: new Date(),
+          errors: result.errors,
+          startedAt: new Date(Date.now() - result.duration * 1000),
+          completedAt: new Date(),
           duration: result.duration
         }
       });
@@ -214,7 +214,7 @@ export class JobService {
 
       const recentLogs = await this.db.scrapingLog.findMany({
         take: 10,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { completedAt: 'desc' }
       });
 
       const lastUpdate = await this.db.jobListing.findFirst({
