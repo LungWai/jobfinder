@@ -58,7 +58,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
           <div className="flex items-start justify-between">
             <div>
               <Link 
-                to={`/job/${job.id}`}
+                to={`/jobs/${job.id}`}
                 className="text-xl font-semibold text-gray-900 hover:text-primary-600 transition-colors duration-200"
               >
                 {job.title}
@@ -136,7 +136,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
       {/* Actions */}
       <div className="flex justify-between items-center pt-4 border-t border-gray-200">
         <Link
-          to={`/job/${job.id}`}
+          to={`/jobs/${job.id}`}
           className="text-primary-600 hover:text-primary-700 font-medium text-sm transition-colors duration-200"
         >
           View Details

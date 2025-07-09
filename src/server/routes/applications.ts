@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { ApplicationService } from '../../services/application.service';
-import { authenticateUser } from '../../auth/auth.middleware';
+import { authenticate } from '../../auth/auth.middleware';
+import { prisma } from '../../database/client';
 import { 
   CreateApplicationInput, 
   UpdateApplicationInput,
@@ -11,10 +12,10 @@ import { validateRequest } from '../../utils/validators';
 import { body, param, query } from 'express-validator';
 
 const router = Router();
-const applicationService = new ApplicationService();
+const applicationService = new ApplicationService(prisma);
 
 // All routes require authentication
-router.use(authenticateUser);
+router.use(authenticate);
 
 // Create a new application
 router.post('/', 

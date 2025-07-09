@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { authenticateUser } from '../../auth/auth.middleware';
+import { authenticate } from '../../auth/auth.middleware';
 import { validateRequest } from '../../utils/validators';
 import { body, query } from 'express-validator';
 import { PrismaClient } from '@prisma/client';
@@ -47,7 +47,7 @@ const upload = multer({
 });
 
 // All routes require authentication
-router.use(authenticateUser);
+router.use(authenticate);
 
 // Get user profile
 router.get('/', async (req: Request, res: Response) => {

@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { DocumentService } from '../../services/document.service';
-import { authenticateUser } from '../../auth/auth.middleware';
+import { authenticate } from '../../auth/auth.middleware';
+import { prisma } from '../../database/client';
 import { validateRequest } from '../../utils/validators';
 import { body, param, query } from 'express-validator';
 import { DocumentType } from '@prisma/client';
@@ -9,7 +10,7 @@ import path from 'path';
 import fs from 'fs/promises';
 
 const router = Router();
-const documentService = new DocumentService();
+const documentService = new DocumentService(prisma);
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -55,7 +56,7 @@ const upload = multer({
 });
 
 // All routes require authentication
-router.use(authenticateUser);
+router.use(authenticate);
 
 // Upload a document
 router.post('/',

@@ -1,15 +1,16 @@
 import { Router, Request, Response } from 'express';
 import { ReminderService } from '../../services/reminder.service';
-import { authenticateUser } from '../../auth/auth.middleware';
+import { authenticate } from '../../auth/auth.middleware';
+import { prisma } from '../../database/client';
 import { validateRequest } from '../../utils/validators';
 import { body, param, query } from 'express-validator';
 import { ReminderType, ReminderStatus } from '@prisma/client';
 
 const router = Router();
-const reminderService = new ReminderService();
+const reminderService = new ReminderService(prisma);
 
 // All routes require authentication
-router.use(authenticateUser);
+router.use(authenticate);
 
 // Create a reminder
 router.post('/',

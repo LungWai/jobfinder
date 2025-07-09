@@ -1,15 +1,16 @@
 import { Router, Request, Response } from 'express';
 import { InterviewService } from '../../services/interview.service';
-import { authenticateUser } from '../../auth/auth.middleware';
+import { authenticate } from '../../auth/auth.middleware';
+import { prisma } from '../../database/client';
 import { validateRequest } from '../../utils/validators';
 import { body, param, query } from 'express-validator';
 import { InterviewType, InterviewStatus } from '@prisma/client';
 
 const router = Router();
-const interviewService = new InterviewService();
+const interviewService = new InterviewService(prisma);
 
 // All routes require authentication
-router.use(authenticateUser);
+router.use(authenticate);
 
 // Schedule a new interview
 router.post('/',

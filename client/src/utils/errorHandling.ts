@@ -105,7 +105,7 @@ export const getErrorDetails = (error: unknown): {
 };
 
 // Format error for user display
-export const formatErrorForDisplay = (error: unknown): {
+export const formatErrorForDisplay = (error: unknown, navigate?: (path: string) => void): {
   title: string;
   description: string;
   actions?: Array<{ label: string; action: () => void }>;
@@ -132,7 +132,11 @@ export const formatErrorForDisplay = (error: unknown): {
     actions.push({
       label: 'Go to Login',
       action: () => {
-        window.location.href = '/login';
+        if (navigate) {
+          navigate('/login');
+        } else {
+          window.location.href = '/login';
+        }
       },
     });
   }
