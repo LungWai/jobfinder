@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
 import dotenv from 'dotenv';
-import { JobService } from '../database/job-service';
+import { JobService } from '../services/job.service';
 import logger from '../utils/logger';
 import prisma from '../database/client';
 

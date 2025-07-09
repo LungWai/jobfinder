@@ -2,7 +2,7 @@
 
 import dotenv from 'dotenv';
 import { ScraperManager } from '../scrapers/scraper-manager';
-import { JobService } from '../database/job-service';
+import { JobService } from '../services/job.service';
 import logger from '../utils/logger';
 
 // Load environment variables

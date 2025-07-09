@@ -1,5 +1,5 @@
 import express from 'express';
-import { JobService } from '../../database/job-service';
+import { JobService } from '../../services/job.service';
 import { JobFilters } from '../../types/job';
 import logger from '../../utils/logger';
 

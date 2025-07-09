@@ -2,7 +2,7 @@ import { JobsDBScraper } from './jobsdb-scraper';
 import { RecruitScraper } from './recruit-scraper';
 import { GoodJobsScraper } from './goodjobs-scraper';
 import { UniversityScraper } from './university-scraper';
-import { JobService } from '../database/job-service';
+import { JobService } from '../services/job.service';
 import { ScrapingResult } from '../types/job';
 import { BaseScraper } from './base-scraper';
 import logger from '../utils/logger';

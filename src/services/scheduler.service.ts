@@ -5,7 +5,7 @@ import { queueService } from './queue.service';
 import { emailService } from './email.service';
 import { ReminderService } from './reminder.service';
 import { ScraperManager } from '../scrapers/scraper-manager';
-import { JobService } from '../database/job-service';
+import { JobService } from '../services/job.service';
 import path from 'path';
 import fs from 'fs/promises';
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import { JobService } from '../../database/job-service';
+import { JobService } from '../../services/job.service';
 import { ScraperManager } from '../../scrapers/scraper-manager';
 import { seedJobs } from '../../scripts/seed-jobs';
 import logger from '../../utils/logger';

@@ -1,6 +1,6 @@
 import { BaseScraper } from './base-scraper';
 import { JobListing, ScrapingResult, ScrapingConfig } from '../types/job';
-import { JobService } from '../database/job-service';
+import { JobService } from '../services/job.service';
 import logger from '../utils/logger';
 
 export class RecruitScraper extends BaseScraper {
